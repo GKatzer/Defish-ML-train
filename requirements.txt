@@ -1,0 +1,16 @@
+# Dependencies of the scripts in experiments/ (training and evaluation). Versions were not pinned when the experiments
+# were run; docs/reproducing.md lists the versions the checks of this documentation were run with.
+# `experiments/classifier/infer_onnx.py` needs only: onnxruntime, numpy, Pillow.
+torch
+transformers
+ultralytics            # AGPL-3.0; detector training and the YOLO classifier baseline
+scikit-learn
+pandas
+numpy
+Pillow
+joblib
+opencv-python-headless
+onnx
+onnxruntime
+open_clip_torch        # BioCLIP embedder in clf_frozen_vs_yolo.py
+matplotlib             # imported by the inference service's detector, which det_eval.py uses as the production pipeline

@@ -1,0 +1,24 @@
+runs/
+patchcore-inspection
+cropped_fish/
+cluster_0
+cluster_1
+
+*.png
+*.jpg
+*.zip
+*.csv
+*.pkl
+*.faiss
+*.pt
+*.onnx
+*.onnx.data
+*.npy
+*.npz
+*.yaml
+
+__pycache__/
+*.pyc
+# figures and example pictures of the documentation are tracked
+!docs/media/*.png
+!docs/media/*.jpg

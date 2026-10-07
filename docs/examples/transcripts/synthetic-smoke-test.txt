@@ -1,0 +1,41 @@
+Smoke test of the data and evaluation plumbing on SYNTHETIC data (random noise with drawn rectangles), 2026-10-05.
+Python 3.12.3, torch 2.14.1+cpu, ultralytics 8.4.173, onnxruntime 1.30.0, numpy 2.5.2, pandas 3.0.6. The evaluation numbers mean nothing: the 'detector' is a constant stand-in.
+It shows that build_splits.py and det_eval.py (production pipeline, imported from the inference service) run end to end with paths from the environment.
+
+$ export DEFISH_DATA_DIR=<scratch>/data DEFISH_INFERENCE_DIR=<path to the Defish-inference checkout>
+$ python docs/examples/synthetic_detector_data.py --standin-detector <scratch>/standin_detector.onnx
+synthetic detector data written to <scratch>/data
+stand-in detector written to <scratch>/standin_detector.onnx
+
+$ python experiments/detector/build_splits.py
+images=94 groups=60
+                    images  boxes  empty
+source       split                      
+ds_v2        test       10     39      0
+             train      34    117      0
+             valid      10     36      0
+hand_label   test        3      3      0
+             train      14     14      0
+             valid       3      3      0
+hl_null_tiny test        3      0      3
+             train      14      0     14
+             valid       3      0      3
+written to <scratch>/data/detector/v3
+
+$ python experiments/detector/det_eval.py --model <scratch>/standin_detector.onnx --tag standin --backend prod-white --splits valid test
+evaluating standin on valid ...
+evaluating standin on test ...
+
+=== valid (P/R/FP at conf 0.25, IoU 0.5) ===
+  model       source  n_img  n_gt  AP50    P    R  FP_per_img  bestF1  R tiny<24  R small 24-64  R medium 64-192  R large>=192
+standin          ALL     16    39  0.00 0.00 0.00        2.00    0.00        NaN           0.00             0.00           NaN
+standin        ds_v2     10    36  0.00 0.00 0.00        2.00    0.00        NaN           0.00             0.00           NaN
+standin   hand_label      3     3  0.00 0.00 0.00        2.00    0.00        NaN            NaN             0.00           NaN
+standin hl_null_tiny      3     0  0.00 0.00 0.00        2.00    0.00        NaN            NaN              NaN           NaN
+
+=== test (P/R/FP at conf 0.25, IoU 0.5) ===
+  model       source  n_img  n_gt  AP50    P    R  FP_per_img  bestF1  R tiny<24  R small 24-64  R medium 64-192  R large>=192
+standin          ALL     16    42  0.00 0.00 0.00        2.00    0.00        NaN            NaN             0.00           NaN
+standin        ds_v2     10    39  0.00 0.00 0.00        2.00    0.00        NaN            NaN             0.00           NaN
+standin   hand_label      3     3  0.00 0.00 0.00        2.00    0.00        NaN            NaN             0.00           NaN
+standin hl_null_tiny      3     0  0.00 0.00 0.00        2.00    0.00        NaN            NaN              NaN           NaN

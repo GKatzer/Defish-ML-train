@@ -1,0 +1,21 @@
+{
+  "embedder": "dinov2_base_224",
+  "classes": [
+    "dermatomycosis",
+    "fin_rot",
+    "healthy",
+    "hexamitosis",
+    "mycobacteriosis",
+    "oodiniosis",
+    "plistophorosis"
+  ],
+  "confidence_threshold": 0.83,
+  "expected_cv_accuracy": 0.572,
+  "expected_cv_accuracy_sd": 0.036,
+  "expected_cv_top3_accuracy": 0.841,
+  "n_train_crops": 138,
+  "n_external_silver_crops": 5,
+  "trained_on": "all 7 gold classes + 5 external silver 'healthy' crops, no holdout (dropped: ['many_fish', 'not_a_fish'])",
+  "onnx_embedder": "embedder_dinov2_base.onnx",
+  "onnx_embedder_size_mb": 347.9
+}
